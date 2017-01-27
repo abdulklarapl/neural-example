@@ -6,10 +6,7 @@ import io.abdulklarapl.neural.example.domain.digit.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author Patryk Szlagowski <patryksz@lsnova.pl>
@@ -28,6 +25,25 @@ public class DigitNetworkController {
     @RequestMapping(value = "api/digit/train", method = RequestMethod.POST)
     public ResponseEntity train(@RequestBody Request request) throws Exception {
         network.train(request);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "api/digit/train", method = RequestMethod.GET)
+    public ResponseEntity train() throws Exception {
+        network.train("/data/train.csv");
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "api/digit/persist", method = RequestMethod.PUT)
+    public ResponseEntity<String> persist() throws Exception {
+        return new ResponseEntity<String>(network.persist(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "api/digit/wakeup", method = RequestMethod.GET)
+    public ResponseEntity wakeup(
+            @RequestParam("timestamp") String timestamp
+    ) throws Exception {
+        network.wakeup(timestamp);
         return new ResponseEntity(HttpStatus.OK);
     }
 }

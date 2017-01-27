@@ -3,8 +3,6 @@ package io.abdulklarapl.neural.example.domain.digit;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.abdulklarapl.neural.train.TrainData;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.IntStream;
 
 /**
@@ -17,6 +15,14 @@ public class Request {
     private String payload;
     @JsonProperty("expected_output")
     private Integer expected;
+
+    public Request() {
+    }
+
+    public Request(Integer expected, String payload) {
+        this.expected = expected;
+        this.payload = payload;
+    }
 
     public Integer getRows() {
         return rows;

@@ -17,42 +17,53 @@ $.fn.prepareCanvas = function () {
 };
 $(document).ready(function () {
     $(".draw-canvas").prepareCanvas();
-});
 
-$("#form-train").on("submit", function () {
-    var data = {
-        expected_output: $(this).find("#train-number").val(),
-        payload : getInput($(this).find(".draw-canvas"))
-    };
-    $.ajax({
-        method: "POST",
-        url: "/api/digit/train",
-        contentType : "application/json",
-        data: JSON.stringify(data)
-    }).done(function(data){
-        console.log(data);
+    $("#form-train").on("submit", function () {
+        var data = {
+            expected_output: $(this).find("#train-number").val(),
+            payload: getInput($(this).find(".draw-canvas"))
+        };
+        $.ajax({
+            method: "POST",
+            url: "/api/digit/train",
+            contentType: "application/json",
+            data: JSON.stringify(data)
+        }).done(function (data) {
+            console.log(data);
+        });
+        return false;
     });
-    return false;
-});
 
-$("#form-recognize").on("submit", function() {
-    var data = {
-        payload: getInput($(this).find(".draw-canvas"))
-    }
-    $.ajax({
-        method: "POST",
-        url: "/api/digit/recognize",
-        contentType: "application/json",
-        data: JSON.stringify(data)
-    }).done(function(data) {
-        $("recognize-output").removeClass("hide").addClass("show").append(data);
+    $("#form-recognize").on("submit", function () {
+        var data = {
+            payload: getInput($(this).find(".draw-canvas"))
+        }
+        $.ajax({
+            method: "POST",
+            url: "/api/digit/recognize",
+            contentType: "application/json",
+            data: JSON.stringify(data)
+        }).done(function (data) {
+            var container = $("#recognize-output").removeClass("hide").addClass("show");
+            container.find("#recognize-digit").html(data.recognized_int);
+
+            var output = [];
+            for (var i =0;i<data.output.length;i++) {
+                output.push(i+"="+data.output[i]);
+            }
+            container.find("#recognize-calculations").html(output.join("<br/>"));
+        });
+        return false;
     });
-    return false;
+
+    $("button[type=reset]").on("click", function() {
+        $(this).parent().parent().find(".draw-canvas .cell").removeClass("fill");
+    });
 });
 
-getInput = function(container) {
+getInput = function (container) {
     var data = "";
-    container.find(".cell").each(function() {
+    container.find(".cell").each(function () {
         if ($(this).hasClass("fill")) {
             data += "1";
         } else {

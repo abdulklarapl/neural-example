@@ -17,15 +17,16 @@
                 <h2>Train</h2>
                 <form action="#" id="form-train">
                     <div class="form-group">
-                        <label for="train-number">Number</label>
-                        <input type="text" name="train-number" id="train-number" />
-                    </div>
-                    <div class="form-group">
                         <label>Draw:</label>
                         <div class="draw-canvas" id="draw-train"></div>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-default">Train</button>
+                        <label for="train-number">Number</label>
+                        <input type="text" name="train-number" id="train-number" />
+                    </div>
+                    <div class="form-group">
+                        <button type="reset" class="btn btn-default">Reset</button>
+                        <button type="submit" class="btn btn-primary">Train</button>
                     </div>
                 </form>
             </div>
@@ -37,10 +38,14 @@
                         <div class="draw-canvas" id="draw-recognize"></div>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-default">Recognize</button>
+                        <button type="reset" class="btn btn-default">Reset</button>
+                        <button type="submit" class="btn btn-primary">Recognize</button>
                     </div>
                 </form>
-                <div class="alert alert-success hide" id="recognize-output"></div>
+                <div class="alert alert-success hide" id="recognize-output">
+                    <p>I think, this is <strong id="recognize-digit"></strong></p>
+                    <p>You can see at the calculations: <br/> <strong id="recognize-calculations"></strong></p>
+                </div>
             </div>
         </div>
     </div>
