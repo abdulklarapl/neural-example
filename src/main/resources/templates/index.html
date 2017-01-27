@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Train and use neural network!</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <link rel="stylesheet" href="css/neural.css" />
+
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <h1>Digit Neural Network</h1>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Train</h2>
+                <form action="#" id="form-train">
+                    <div class="form-group">
+                        <label for="train-number">Number</label>
+                        <input type="text" name="train-number" id="train-number" />
+                    </div>
+                    <div class="form-group">
+                        <label>Draw:</label>
+                        <div class="draw-canvas" id="draw-train"></div>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-default">Train</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h2>Recognize</h2>
+                <form action="#" id="form-recognize">
+                    <div class="form-group">
+                        <label>Draw:</label>
+                        <div class="draw-canvas" id="draw-recognize"></div>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-default">Recognize</button>
+                    </div>
+                </form>
+                <div class="alert alert-success hide" id="recognize-output"></div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="js/bootstrap.min.js" />
+    <script src="js/neural.js" />
+</body>
+</html>

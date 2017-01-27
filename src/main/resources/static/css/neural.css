@@ -1,0 +1,17 @@
+.draw-canvas {
+    width: 253px;
+    height: 253px;
+    border: 1px solid #000;
+    overflow: hidden;
+}
+.draw-canvas .cell {
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border: 1px solid #8c8c8c;
+    display: inline-block;
+    float: left;
+}
+.draw-canvas .cell.fill {
+    background: #8c8c8c;
+}
