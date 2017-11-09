@@ -14,10 +14,7 @@ import java.io.ObjectInputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -76,7 +73,7 @@ public class DigitNetwork {
             return;
         }
         Trainer trainer = new Trainer(network);
-        trainer.train(request.toTrainData(), 0.01);
+        trainer.train(request.toTrainData(), 0.001);
     }
 
     /**
@@ -124,8 +121,17 @@ public class DigitNetwork {
     public Map<Integer, List<Neuron>> dump() {
         Map<Integer, List<Neuron>> important = new HashMap<>();
         Integer index = 0;
-        for (Neuron neuron : network.getOutput().getNeurons()) {
-            important.put(index, neuron.getSynapses().stream().sorted((syn1, syn2) -> Double.compare(syn1.getWeight(), syn2.getWeight())).map(synapse -> synapse.getSource()).collect(Collectors.toList()).subList(0, 40));
+        for (Neuron outputNeuron : network.getOutput().getNeurons()) {
+            List<Neuron> neuronsInHiddenLayer = outputNeuron.getSynapses().stream().sorted((syn1, syn2) -> Double.compare(syn1.getWeight(), syn2.getWeight())).map(synapse -> synapse.getSource()).collect(Collectors.toList());
+            List<Neuron> inputNeurons = new ArrayList<>();
+            for (Neuron hiddenNeuron : neuronsInHiddenLayer) {
+                hiddenNeuron.getSynapses().stream().sorted((syn11, syn22) -> Double.compare(syn11.getWeight(), syn22.getWeight())).map(synapse -> synapse.getSource()).forEach(neuron -> {
+                    if (!inputNeurons.contains(neuron)) {
+                        inputNeurons.add(neuron);
+                    }
+                });
+            }
+            important.put(index, inputNeurons.subList(0, 40));
             index++;
         }
 
