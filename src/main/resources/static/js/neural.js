@@ -18,25 +18,31 @@ $.fn.prepareCanvas = function () {
 $(document).ready(function () {
     $(".draw-canvas").prepareCanvas();
 
-    $("#form-train").on("submit", function () {
+    $("#form-digit button[data-action=train]").on("click", function () {
         var data = {
-            expected_output: $(this).find("#train-number").val(),
-            payload: getInput($(this).find(".draw-canvas"))
+            expected_output: $("#train-number").val(),
+            payload: getInput($(".draw-canvas"))
         };
         $.ajax({
             method: "POST",
             url: "/api/digit/train",
             contentType: "application/json",
             data: JSON.stringify(data)
-        }).done(function (data) {
-            console.log(data);
+        })
+        .done(function (data) {
+            $("#training-output").removeClass("show").addClass("hide");
+            var container = $("#train-output").removeClass("hide").addClass("show");
+            container.find("#recognize-digit").html(data.recognized_int);
         });
+        $("#recognize-output").removeClass("show").addClass("hide");
+        $("#training-output").removeClass("hide").addClass("show");
+
         return false;
     });
 
-    $("#form-recognize").on("submit", function () {
+    $("#form-digit button[data-action=submit]").on("click", function () {
         var data = {
-            payload: getInput($(this).find(".draw-canvas"))
+            payload: getInput($(".draw-canvas"))
         }
         $.ajax({
             method: "POST",
@@ -44,12 +50,15 @@ $(document).ready(function () {
             contentType: "application/json",
             data: JSON.stringify(data)
         }).done(function (data) {
+            $("#training-output").removeClass("show").addClass("hide");
+            $("#train-output").removeClass("show").addClass("hide");
             var container = $("#recognize-output").removeClass("hide").addClass("show");
             container.find("#recognize-digit").html(data.recognized_int);
 
             var output = [];
             for (var i =0;i<data.output.length;i++) {
-                output.push(i+"="+data.output[i]);
+                var length = Math.round(data.output[i]*4000);
+                output.push(i+" <span class='result' style='width:"+length+"px;'>"+Math.round(data.output[i]*100000)/10000+"</span>");
             }
             container.find("#recognize-calculations").html(output.join("<br/>"));
         });

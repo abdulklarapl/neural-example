@@ -10,43 +10,36 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <h1>Digit Neural Network</h1>
-        </div>
-        <div class="row">
+            <div class="col-md-3"></div>
             <div class="col-md-6">
-                <h2>Train</h2>
-                <form action="#" id="form-train">
-                    <div class="form-group">
-                        <label>Draw:</label>
-                        <div class="draw-canvas" id="draw-train"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="train-number">Number</label>
-                        <input type="text" name="train-number" id="train-number" />
-                    </div>
-                    <div class="form-group">
-                        <button type="reset" class="btn btn-default">Reset</button>
-                        <button type="submit" class="btn btn-primary">Train</button>
-                    </div>
-                </form>
-            </div>
-            <div class="col-md-6">
+                <h1>Digit Neural Network</h1>
                 <h2>Recognize</h2>
-                <form action="#" id="form-recognize">
+                <form action="#" id="form-digit">
                     <div class="form-group">
                         <label>Draw:</label>
                         <div class="draw-canvas" id="draw-recognize"></div>
                     </div>
                     <div class="form-group">
+                        <input type="text" name="train-number" id="train-number" placeholder="number" />
+                        <button type="button" class="btn btn-primary" data-action="train">Train</button>
+                    </div>
+                    <div class="form-group">
                         <button type="reset" class="btn btn-default">Reset</button>
-                        <button type="submit" class="btn btn-primary">Recognize</button>
+                        <button type="button" class="btn btn-primary" data-action="submit">Recognize</button>
                     </div>
                 </form>
                 <div class="alert alert-success hide" id="recognize-output">
                     <p>I think, this is <strong id="recognize-digit"></strong></p>
                     <p>You can see at the calculations: <br/> <strong id="recognize-calculations"></strong></p>
                 </div>
+                <div class="alert alert-success hide" id="train-output">
+                    <p>Trained!</p>
+                </div>
+                <div class="alert alert-info hide" id="training-output">
+                    <p>Training..</p>
+                </div>
             </div>
+            <div class="col-md-3"></div>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>

@@ -1,5 +1,7 @@
 package io.abdulklarapl.neural.example.domain.digit;
 
+import io.abdulklarapl.neural.activator.LinearActivationFunction;
+import io.abdulklarapl.neural.activator.ThresholdActivatorFunction;
 import io.abdulklarapl.neural.element.Network;
 import io.abdulklarapl.neural.train.Trainer;
 import org.apache.log4j.Logger;
@@ -39,7 +41,13 @@ public class DigitNetwork {
         String content = new String(Files.readAllBytes(Paths.get(path.toURI())));
 
         Arrays.stream(content.split("\n")).forEach(line -> {
+            if (line == null || line.isEmpty()) {
+                return;
+            }
+
             String[] parts = line.split(Pattern.quote(";"));
+
+            logger.info("line "+parts[0]);
             Request request = new Request(Integer.parseInt(parts[0]), parts[1]);
             try {
                 train(request);
