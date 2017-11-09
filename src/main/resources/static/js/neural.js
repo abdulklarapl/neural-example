@@ -65,6 +65,10 @@ $(document).ready(function () {
         return false;
     });
 
+    $("#form-digit button[data-action=visualize]").on("click", function () {
+        fillInput($(".draw-canvas"), $("#visualize-string").val());
+    });
+
     $("button[type=reset]").on("click", function() {
         $(this).parent().parent().find(".draw-canvas .cell").removeClass("fill");
     });
@@ -81,4 +85,16 @@ getInput = function (container) {
     });
 
     return data;
+};
+
+fillInput = function (container, data) {
+    var index = 0;
+    container.find(".cell").each(function() {
+        if (data[index] == "1") {
+            $(this).addClass("fill");
+        } else {
+            $(this).removeClass("fill");
+        }
+        index++;
+    })
 };

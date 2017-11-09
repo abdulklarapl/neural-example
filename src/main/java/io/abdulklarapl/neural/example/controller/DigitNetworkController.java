@@ -46,4 +46,9 @@ public class DigitNetworkController {
         network.wakeup(timestamp);
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    @RequestMapping(value = "api/digit", method = RequestMethod.GET)
+    public ResponseEntity dump() {
+        return new ResponseEntity(network.dumpSimple(), HttpStatus.OK);
+    }
 }

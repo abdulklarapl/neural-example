@@ -3,6 +3,7 @@ package io.abdulklarapl.neural.example.domain.digit;
 import io.abdulklarapl.neural.activator.LinearActivationFunction;
 import io.abdulklarapl.neural.activator.ThresholdActivatorFunction;
 import io.abdulklarapl.neural.element.Network;
+import io.abdulklarapl.neural.element.Neuron;
 import io.abdulklarapl.neural.train.Trainer;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,13 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * @author Patryk Szlagowski <patryksz@lsnova.pl>
@@ -107,5 +114,45 @@ public class DigitNetwork {
         URL path = DigitNetwork.class.getResource(fileName);
         ObjectInputStream stream = new ObjectInputStream(new FileInputStream(fileName));
         network = (Network) stream.readObject();
+    }
+
+    /**
+     * return most important input neurons for a specific output
+     *
+     * @return
+     */
+    public Map<Integer, List<Neuron>> dump() {
+        Map<Integer, List<Neuron>> important = new HashMap<>();
+        Integer index = 0;
+        for (Neuron neuron : network.getOutput().getNeurons()) {
+            important.put(index, neuron.getSynapses().stream().sorted((syn1, syn2) -> Double.compare(syn1.getWeight(), syn2.getWeight())).map(synapse -> synapse.getSource()).collect(Collectors.toList()).subList(0, 40));
+            index++;
+        }
+
+        return important;
+    }
+
+    /**
+     * dump simple:
+     * output number -> 0001001001001 = sequence of characters
+     *
+     * @return
+     */
+    public Map<Integer, String> dumpSimple() {
+        Map<Integer, List<Neuron>> important = dump();
+        Map<Integer, String> simple = new HashMap<>();
+        for (Integer index : important.keySet()) {
+            Map<Long, Neuron> neurons =  important.get(index).stream().collect(Collectors.toMap(Neuron::getId, neuron -> neuron));
+            String value = IntStream.range(0, network.getInput().getNeurons().size()).mapToObj(in -> {
+                if (neurons.containsKey(Integer.valueOf(in).longValue())) {
+                    return "1";
+                }
+                return "0";
+            }).collect(Collectors.joining());
+
+            simple.put(index, value);
+        }
+
+        return simple;
     }
 }
